@@ -3,7 +3,7 @@
 @section('content')
 <h1 class="title">Edit Project</h1>
 
-<form action="/projects/{{$projects->id}}" method="post" style="margin-bottom: 10px">
+<form action="/projects/{{$project->id}}" method="post" style="margin-bottom: 10px">
     {{method_field('PATCH')}}
     {{csrf_field()}}
     <div class ="field">
@@ -11,7 +11,7 @@
         <label class="label" for="title">Title</label>
         
         <div class="control">
-            <input type="text" name="title" class="input is-medium" value = "{{$projects->title}}">
+            <input type="text" name="title" class="input is-medium" value = "{{$project->title}}">
         </div>
 
     </div>
@@ -21,7 +21,7 @@
         <label class="label" for="description">Description</label>
 
         <div class="control">
-            <textarea name="description" class = "textarea is-info">{{ $projects->description }}</textarea>
+            <textarea name="description" class = "textarea is-info">{{ $project->description }}</textarea>
 
         </div>
 
@@ -37,7 +37,7 @@
     </div>
 </form>
 
-<form action="/projects/{{$projects->id}}" method="post" >
+<form action="/projects/{{$project->id}}" method="post" >
     {{method_field('DELETE')}}
     {{csrf_field()}}
     <div class ="field">
