@@ -10,7 +10,7 @@
             <label class="label" for="title">Title</label>
 
             <div class="control">
-                <input type="text" name="title" class="input is-medium">
+                <input type="text" name="title" class="input is-medium" required value="{{ old('title') }}">
             </div>
 
         </div>
@@ -20,7 +20,7 @@
             <label class="label" for="description">Description</label>
 
             <div class="control">
-                <textarea name="description" class = "textarea is-info"></textarea>
+                <textarea name="description" class = "textarea is-info" required> {{ old('description') }}</textarea>
 
             </div>
 
@@ -33,5 +33,15 @@
             </div>
 
         </div>
+
+        @if($errors->any())
+        <div class="notification is-danger">
+           <ul>
+               @foreach($errors->all() as $error)
+                    <li> {{ $error }} </li>
+               @endforeach
+           </ul>
+        </div>
+        @endif
     </form>
 @endsection
