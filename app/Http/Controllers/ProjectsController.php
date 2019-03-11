@@ -30,8 +30,6 @@ class ProjectsController extends Controller {
             'description' => ['required' , 'min:3' , 'max:255']
         ]);
 
-        dd(request()->errors());
-
         Project::create(request(['title' , 'description']));
 
         return redirect('/projects');
