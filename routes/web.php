@@ -1,32 +1,35 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-| Routing convention as follows:
-| GET /projects (index)
-| GET /projects/create (create)
-| GET /projects/1 (show)
-| POST /projects/ (store)
-| GET /projects/1/edit (edit)
-| PATCH /projects/1 (update)
-| DELETE /projects/1 (destroy)
-|
-*/
+Route::redirect('/', '/login');
+Route::get('/home', function () {
+    if (session('status')) {
+        return redirect()->route('admin.home')->with('status', session('status'));
+    }
 
-Route::get('/' , 'PagesController@home');
-Route::get('/about' , 'PagesController@about');
-Route::get('/contact' , 'PagesController@contact');
+    return redirect()->route('admin.home');
+});
 
+Auth::routes(['register' => false]);
 
-Route::resource('projects' , 'ProjectsController');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    // Permissions
+    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
+    Route::resource('permissions', 'PermissionsController');
 
+    // Roles
+    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+    Route::resource('roles', 'RolesController');
 
-Route::post('/projects/{project}/tasks' , 'ProjectTasksController@store');
-Route::patch('/tasks/{task}' , 'ProjectTasksController@update');
+    // Users
+    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+    Route::resource('users', 'UsersController');
+
+    // Categories
+    Route::delete('categories/destroy', 'CategoriesController@massDestroy')->name('categories.massDestroy');
+    Route::resource('categories', 'CategoriesController');
+
+    // Expenses
+    Route::delete('expenses/destroy', 'ExpensesController@massDestroy')->name('expenses.massDestroy');
+    Route::resource('expenses', 'ExpensesController');
+});
